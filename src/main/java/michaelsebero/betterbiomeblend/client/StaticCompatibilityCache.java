@@ -1,0 +1,64 @@
+package michaelsebero.betterbiomeblend.client;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public final class StaticCompatibilityCache {
+    
+    private static final ThreadLocal<ColorChunk> threadLocalGrassChunk = ThreadLocal.withInitial(() -> {
+        ColorChunk chunk = new ColorChunk();
+        chunk.acquire();
+        return chunk;
+    });
+
+    private static final ThreadLocal<ColorChunk> threadLocalWaterChunk = ThreadLocal.withInitial(() -> {
+        ColorChunk chunk = new ColorChunk();
+        chunk.acquire();
+        return chunk;
+    });
+
+    private static final ThreadLocal<ColorChunk> threadLocalFoliageChunk = ThreadLocal.withInitial(() -> {
+        ColorChunk chunk = new ColorChunk();
+        chunk.acquire();
+        return chunk;
+    });
+
+    private static final ThreadLocal<ColorChunk> threadLocalGenericChunk = ThreadLocal.withInitial(() -> {
+        ColorChunk chunk = new ColorChunk();
+        chunk.acquire();
+        return chunk;
+    });
+
+    private static final AtomicBoolean isGenerated = new AtomicBoolean(false);
+    
+    private static volatile ColorChunkCache colorChunkCache = null;
+
+    public static ColorChunkCache getColorChunkCache() {
+        if(!isGenerated.get()) {
+            if(isGenerated.compareAndSet(false, true)) {
+                colorChunkCache = new ColorChunkCache(2048);
+            }
+            else {
+                while(colorChunkCache == null) {
+                }
+            }
+        }
+
+        return colorChunkCache;
+    }
+
+    public static ThreadLocal<ColorChunk> getThreadLocalGrassChunkWrapper() {
+        return threadLocalGrassChunk;
+    }
+
+    public static ThreadLocal<ColorChunk> getThreadLocalWaterChunkWrapper() {
+        return threadLocalWaterChunk;
+    }
+
+    public static ThreadLocal<ColorChunk> getThreadLocalFoliageChunkWrapper() {
+        return threadLocalFoliageChunk;
+    }
+
+    public static ThreadLocal<ColorChunk> getThreadLocalGenericChunkWrapper() {
+        return threadLocalGenericChunk;
+    }
+}

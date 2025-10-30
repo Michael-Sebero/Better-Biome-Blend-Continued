@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "package": "michaelsebero.betterbiomeblend.mixin",
+    "refmap": "mixins.betterbiomeblend.refmap.json",
+    "compatibilityLevel": "JAVA_8",
+    "target": "@env(DEFAULT)",
+    "minVersion": "0.8",
+    "mixins": [
+    ],
+    "client": [
+        "MixinBiomeColorHelper",
+        "optifine.MixinCustomColors",
+        "MixinWorldClient"
+    ]
+}
